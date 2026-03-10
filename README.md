@@ -41,3 +41,24 @@
   with pd.ExcelWriter('结果.xlsx') as writer:
       df1.to_excel(writer, sheet_name='表1')
       df2.to_excel(writer, sheet_name='表2')
+## Day 6（2026.03.10）
+- **学习内容**：pandas 数据处理进阶（缺失值、重复值、异常值、数据类型转换、标准化、字符串操作）
+- **练习文件**：[data_cleaning_advanced.py](./Day6/data_cleaning_advanced.py)
+- **核心收获**：
+  - 能够识别并处理财务数据中的缺失值、重复值、异常值
+  - 掌握数据类型转换技巧，确保数据正确性
+  - 学会数据标准化方法，为后续建模做准备
+  - 能够清洗金蝶导出的科目余额表，为分析打基础
+- **示例代码概览**：
+  ```python
+  # 处理缺失值
+  df.fillna(df.mean(), inplace=True)
+
+  # 检测异常值（IQR法）
+  Q1 = df['金额'].quantile(0.25)
+  Q3 = df['金额'].quantile(0.75)
+  IQR = Q3 - Q1
+  outliers = df[(df['金额'] < Q1-1.5*IQR) | (df['金额'] > Q3+1.5*IQR)]
+
+  # 标准化
+  df['金额_标准化'] = (df['金额'] - df['金额'].min()) / (df['金额'].max() - df['金额'].min())
