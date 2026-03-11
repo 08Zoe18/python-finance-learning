@@ -62,3 +62,36 @@
 
   # 标准化
   df['金额_标准化'] = (df['金额'] - df['金额'].min()) / (df['金额'].max() - df['金额'].min())
+  ## Day 7（2026.03.11）
+- **学习内容**：数据可视化入门（Matplotlib + Seaborn）
+- **练习文件**：[product_sales_chart.py](./Day7/product_sales_chart.py)
+- **生成图表**：各产品销售金额对比柱状图（`产品销售金额对比.png`）
+- **核心收获**：
+  - 掌握 Matplotlib 基础绘图流程（画布、标题、坐标轴、保存）
+  - 学会用 Seaborn 美化图表（设置风格、调色板）
+  - 解决 Matplotlib 中文显示问题（设置中文字体）
+  - 能够将 pandas 分组汇总的结果直接可视化
+  - 学会保存图表为高清图片（dpi=300）
+- **代码示例**：
+  ```python
+  import pandas as pd
+  import matplotlib.pyplot as plt
+  import seaborn as sns
+
+  # 解决中文显示
+  plt.rcParams['font.sans-serif'] = ['SimHei']
+  plt.rcParams['axes.unicode_minus'] = False
+
+  # 准备数据
+  df = pd.read_excel('销售数据.xlsx')
+  df_product = df.groupby('产品名称')['金额'].sum().reset_index()
+  df_product.columns = ['产品名称', '销售额']
+
+  # 绘图
+  plt.figure(figsize=(10,6))
+  sns.barplot(data=df_product, x='产品名称', y='销售额', palette='Blues_d')
+  plt.title('各产品销售金额对比')
+  plt.xticks(rotation=45)
+  plt.tight_layout()
+  plt.savefig('产品销售金额对比.png', dpi=300)
+  plt.show()
